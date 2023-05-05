@@ -147,22 +147,16 @@ app.delete('/tasks/:id', (req, res) => {
 })
 
 // ----------------------------------Cookies--------------------------------//
-app.post('/login', (req, res) => {
-  const email = req.query.email.toLowerCase()
-  const password = req.query.password
-  if (email === 'admin' && password === 'm295') {
-    req.session.email = email
-    res.status(200).json({ email: req.session.email })
-  } else {
-    res.status(401).json({ error: 'Invalid credentials' })
-  }
-})
 
-app.get('/verify', (req, res) => {
-  if (req.session.email) {
-    res.status(200).json({ email: req.session.email })
+// Login using cookies
+app.post('/login', (req, res) => {
+  const username = req.query.username
+  const password = req.query.password
+  if (username === 'admin' && password === 'm295') {
+    req.session.user = username
+    res.status(200).json('Login successful')
   } else {
-    res.status(401).json({ error: 'Not logged in' })
+    res.status(401).json('Login failed')
   }
 }
 )
