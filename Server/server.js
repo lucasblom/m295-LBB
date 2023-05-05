@@ -4,7 +4,7 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 
 const app = express()
-const port = 3000
+const port = 3300
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
@@ -28,19 +28,22 @@ const ToDo = [
     id: 1,
     task: 'Complete math homework',
     creationDate: '2021-03-01',
-    completionDate: '2021-03-03'
+    completionDate: '2021-03-03',
+    person: ''
   },
   {
     id: 2,
     task: 'Buy groceries',
     creationDate: '2021-03-01',
-    completionDate: '2021-03-03'
+    completionDate: '2021-03-03',
+    person: ''
   },
   {
     id: 3,
     task: 'Call mom',
     creationDate: '2021-03-01',
-    completionDate: '2021-03-03'
+    completionDate: '2021-03-03',
+    person: ''
   }
 ]
 
@@ -52,13 +55,14 @@ function returnAll () {
 };
 
 // Function to add a task
-function addTask (id, task, completionDate) {
+function addTask (id, task, completionDate, person) {
   const creationDate = new Date().toISOString().slice(0, 10)
   const newTask = {
     id,
     task,
     creationDate,
-    completionDate
+    completionDate,
+    person
   }
   ToDo.push(newTask)
 };
@@ -96,11 +100,24 @@ function checkId (id) {
     return false
   }
 };
+
+// Function to check if user is logged in
+function checkLogin (req, res, next) {
+  if (req.session.user) {
+    return true
+  } else {
+    return false
+  }
+}
 // --------------------------------main requirements here--------------------------------//
 
 // Get all tasks
 app.get('/tasks', (req, res) => {
-  res.send(returnAll())
+  if (!checkLogin(req, res)) {
+    res.status(401).json('User is not logged in')
+  } else {
+    res.send(returnAll())
+  }
 })
 
 // Add a task
@@ -108,21 +125,30 @@ app.post('/tasks', (req, res) => {
   const id = req.query.id
   const task = req.query.task
   const completionDate = req.query.completionDate
-  if (checkId(id)) {
-    res.status(400).json('Task already exists')
+  const person = req.session.user
+  if (!checkLogin(req, res)) {
+    res.status(401).json('User is not logged in')
   } else {
-    addTask(id, task, completionDate)
-    res.status(201).send(ToDo[ToDo.length - 1])
+    if (checkId(id)) {
+      res.status(400).json('Task already exists')
+    } else {
+      addTask(id, task, completionDate, person)
+      res.status(201).send(ToDo[ToDo.length - 1])
+    }
   }
 })
 
 // Get a task by id
 app.get('/tasks/:id', (req, res) => {
   const id = req.params.id
-  if (!checkId(id)) {
-    res.status(404).json('Task not found')
+  if (!checkLogin(req, res)) {
+    res.status(401).json('User is not logged in')
+  } else {
+    if (!checkId(id)) {
+      res.status(404).json('Task not found')
+    }
+    res.status(200).send(getTask(id))
   }
-  res.status(200).send(getTask(id))
 })
 
 // Update a task
@@ -130,20 +156,29 @@ app.put('/tasks/:id', (req, res) => {
   const id = req.params.id
   const task = req.query.task
   const completionDate = req.query.completionDate
-  if (!checkId(id)) {
-    res.status(404).json('Task not found')
+  if (!checkLogin(req, res)) {
+    res.status(401).json('User is not logged in')
+  } else {
+    if (!checkId(id)) {
+      res.status(404).json('Task not found')
+    } else {
+      res.status(201).send(updateTask(id, task, completionDate))
+    }
   }
-  res.status(201).send(updateTask(id, task, completionDate))
 })
 
 // Delete a task
 app.delete('/tasks/:id', (req, res) => {
   const id = req.params.id
-  if (!checkId(id)) {
-    res.status(404).json('Task not found')
+  if (!checkLogin(req, res)) {
+    res.status(401).json('User is not logged in')
+  } else {
+    if (!checkId(id)) {
+      res.status(404).json('Task not found')
+    }
+    res.status(200).send(getTask(id))
+    deleteTask(id)
   }
-  res.status(200).send(getTask(id))
-  deleteTask(id)
 })
 
 // ----------------------------------Cookies--------------------------------//
@@ -152,11 +187,29 @@ app.delete('/tasks/:id', (req, res) => {
 app.post('/login', (req, res) => {
   const username = req.query.username
   const password = req.query.password
-  if (username === 'admin' && password === 'm295') {
+  // eslint-disable-next-line eqeqeq
+  if (password == 'm295') {
     req.session.user = username
     res.status(200).json('Login successful')
   } else {
     res.status(401).json('Login failed')
   }
+}
+)
+
+// verify if user is logged in
+app.get('/verify', (req, res) => {
+  if (req.session.user) {
+    res.status(200).json('User is logged in')
+  } else {
+    res.status(401).json('User is not logged in')
+  }
+}
+)
+
+// delete session
+app.delete('/logout', (req, res) => {
+  req.session.destroy()
+  res.sendStatus(204)
 }
 )
