@@ -18,7 +18,7 @@ app.use(session({
 // Prints Portnumber and URL
 app.listen(port, () => {
   console.log(
-        `\nPort: ${port}\thttp://localhost:${port}\tEnjoy ;)`
+        `\nPort: ${port}\thttp://localhost:${port})`
   )
 })
 
@@ -48,7 +48,7 @@ const ToDo = [
 ]
 
 // --------------------------------function-declaration--------------------------------//
-
+// Inpiration von alten Aufgaben und Unterrichtsmaterialien https://github.com/SkateFastEatTrash/M295.git
 // Function to return all tasks
 function returnAll () {
   return ToDo
@@ -210,6 +210,7 @@ app.delete('/tasks/:id', (req, res) => {
 // ----------------------------------Cookies--------------------------------//
 
 // Login using cookies
+// Inspiration von Präsentationsfolien https://openscript.github.io/course-zli-m295/#/83
 app.post('/login', (req, res) => {
   const username = req.body.username
   const password = req.body.password
