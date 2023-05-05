@@ -28,7 +28,7 @@ const ToDo = [
     id: 1,
     task: 'Complete math homework',
     creationDate: '2021-03-01',
-    completionDate: '2021-03-03',
+    completionDate: '',
     person: ''
   },
   {
@@ -76,11 +76,12 @@ function getTask (id) {
 };
 
 // Function to update a task
-function updateTask (id, task, completionDate) {
+function updateTask (id, task, completionDate, author) {
   // eslint-disable-next-line eqeqeq
   const updatedTask = ToDo.find(task => task.id == id)
   updatedTask.task = task
   updateTask.completionDate = completionDate
+  updateTask.person = author
   return updatedTask
 };
 
@@ -124,6 +125,7 @@ function validateEmail (email) {
 // Get all tasks
 app.get('/tasks', (req, res) => {
   if (!checkLogin(req, res)) {
+    console.log('Status: 403 \t User is not logged in')
     res.status(403).json('User is not logged in')
   } else {
     res.send(returnAll())
@@ -136,9 +138,11 @@ app.post('/tasks', (req, res) => {
   const completionDate = req.body.completionDate
   const person = req.session.user
   if (!checkLogin(req, res)) {
+    console.log('Status: 403 \t User is not logged in')
     res.status(403).json('User is not logged in')
   } else {
     if (!task) {
+      console.log('Status: 406 \t Task title is missing')
       res.status(406).json('Task title is missing')
     } else {
       addTask(task, completionDate, person)
@@ -151,9 +155,11 @@ app.post('/tasks', (req, res) => {
 app.get('/tasks/:id', (req, res) => {
   const id = req.params.id
   if (!checkLogin(req, res)) {
+    console.log('Status: 403 \t User is not logged in')
     res.status(403).json('User is not logged in')
   } else {
     if (!checkId(id)) {
+      console.log('Status: 404 \t Task not found')
       res.status(404).json('Task not found')
     }
     res.status(200).send(getTask(id))
@@ -165,16 +171,20 @@ app.put('/tasks/:id', (req, res) => {
   const id = req.params.id
   const task = req.body.task
   const completionDate = req.body.completionDate
+  const person = req.session.user
   if (!checkLogin(req, res)) {
+    console.log('Status: 403 \t User is not logged in')
     res.status(403).json('User is not logged in')
   } else {
     if (!checkId(id)) {
+      console.log('Status: 404 \t Task not found')
       res.status(404).json('Task not found')
     } else {
       if (!task) {
+        console.log('Status: 406 \t Task title is missing')
         res.status(406).json('Task title is missing')
       } else {
-        res.status(201).send(updateTask(id, task, completionDate))
+        res.status(201).send(updateTask(id, task, completionDate, person))
       }
     }
   }
@@ -184,9 +194,11 @@ app.put('/tasks/:id', (req, res) => {
 app.delete('/tasks/:id', (req, res) => {
   const id = req.params.id
   if (!checkLogin(req, res)) {
+    console.log('Status: 403 \t User is not logged in')
     res.status(403).json('User is not logged in')
   } else {
     if (!checkId(id)) {
+      console.log('Status: 404 \t Task not found')
       res.status(404).json('Task not found')
     }
     res.status(200).send(getTask(id))
@@ -205,6 +217,7 @@ app.post('/login', (req, res) => {
     req.session.user = username
     res.status(200).json('Login successful')
   } else {
+    console.log('Status: 401 \t Login failed')
     res.status(401).json('Login failed')
   }
 }
@@ -215,6 +228,7 @@ app.get('/verify', (req, res) => {
   if (req.session.user) {
     res.status(200).json('User is logged in')
   } else {
+    console.log('Status: 401 \t User is not logged in')
     res.status(401).json('User is not logged in')
   }
 }
@@ -222,6 +236,7 @@ app.get('/verify', (req, res) => {
 
 // delete session
 app.delete('/logout', (req, res) => {
+  console.log('User logged out')
   req.session.destroy()
   res.sendStatus(204)
 }
