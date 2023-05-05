@@ -4,39 +4,39 @@
 ### GET/tasks liefert eine Liste von allen Tasks im JSON Format zurück. Es nimmt keine Parameter entgegen.
 - Success Response(http://localhost:3300/tasks):
     - Code: 200
-    - Content: `[
-  {
-    "id": 1,
-    "task": "Complete math homework",
-    "creationDate": "2021-03-01",
-    "completionDate": "",
-    "person": ""
-  },
-  {
-    "id": 2,
-    "task": "Buy groceries",
-    "creationDate": "2021-03-01",
-    "completionDate": "2021-03-03",
-    "person": ""
-  },
-  {
-    "id": 3,
-    "task": "Call mom",
-    "creationDate": "2021-03-01",
-    "completionDate": "2021-03-03",
-    "person": ""
-  }
-  `
+    - Content: `[`<br>
+    `{`<br>
+    `"id": 1,`<br>
+    `"task": "Complete math homework",`<br>
+    `"creationDate": "2021-03-01",`<br>
+    `"completionDate": "",`<br>
+    `"person": ""},`<br>
+    `{`<br>
+    `"id": 2,`<br>
+    `"task": "Buy groceries",`<br>
+    `"creationDate": "2021-03-01",`<br>
+    `"completionDate": "2021-03-03",`<br>
+    `"person":`<br>
+    `},`<br>
+    `{`<br>
+    `"id": 3,`<br>
+    `"task": "Call mom",`<br>
+    `"creationDate": "2021-03-01",`<br>
+    `"completionDate": "2021-03-03",`<br>
+    `"person": ""`<br>
+    `}`
 ## POST/tasks
 ### POST/tasks erstellt einen neuen Task. Es nimmt einen JSON Body entgegen, welcher die Eigenschaften des Tasks enthält. Es gibt den erstellten Task im JSON Format zurück.
 - Success Response (http://localhost:3300/tasks):
     - Code: 201
     - Content: <br>
-    `{"id": 4,`<br>
+    `{`<br>
+    `"id": 4,`<br>
     `"task": "Do laundry",`<br>
     `"creationDate": "2021-03-01",`<br>
     `"completionDate": "",`<br>
-    `"person": "user@mail.com"}`
+    `"person": "user@mail.com"`<br>
+    `}`
 
 - Error wenn kein Task beschrieben wird (http://localhost:3300/tasks):
     - Code: 406
@@ -49,11 +49,13 @@
 - Success Response (http://localhost:3300/tasks/1):
     - Code: 200
     - Content: <br>
-    `{"id": 1,`<br>
+    `{`<br>
+    `"id": 1,`<br>
     `"task": "Complete math homework",`<br>
     `"creationDate": "2021-03-01",`<br>
     `"completionDate": "",`<br>
-    `"person": ""}`
+    `"person": ""`<br>
+    `}`
 
 
 - Error wenn Task nicht gefunden wird (http://localhost:3300/tasks/5):
@@ -67,11 +69,13 @@
 - Success Response (http://localhost:3300/tasks/1):
     - Code: 201
     - Content: <br>
-    `{"id": 1,`<br>
+    `{`<br>
+    `"id": 1,`<br>
     `"task": "Walk the Dog",`<br>
     `"creationDate": "2021-03-01",`<br>
     `"completionDate": "",`<br>
-    `"person": "user@mail.com"}`
+    `"person": "user@mail.com"`<br>
+    `}`
 
 - Error wenn Task nicht gefunden wird (http://localhost:3300/tasks/5):
     - Code: 404
@@ -90,11 +94,13 @@
 - Success Response (http://localhost:3300/tasks/1):
     - Code: 200
     - Content: <br>
-    `{"id": 1,`<br>
+    `{`<br>
+    `"id": 1,`<br>
     `"task": "Walk the dog",`<br>
     `"CreationDate": "2021-03-01",`<br>
     `"completionDate": "",`<br>
-    `"person": ""}`
+    `"person": ""`<br>
+    `}`
 
 - Error wenn Task nicht gefunden wird (http://localhost:3300/tasks/5):
     - Code: 404
