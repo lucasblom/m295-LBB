@@ -123,8 +123,8 @@ app.get('/tasks', (req, res) => {
 
 // Add a task
 app.post('/tasks', (req, res) => {
-  const task = req.query.task
-  const completionDate = req.query.completionDate
+  const task = req.body.task
+  const completionDate = req.body.completionDate
   const person = req.session.user
   if (!checkLogin(req, res)) {
     res.status(403).json('User is not logged in')
@@ -154,8 +154,8 @@ app.get('/tasks/:id', (req, res) => {
 // Update a task
 app.put('/tasks/:id', (req, res) => {
   const id = req.params.id
-  const task = req.query.task
-  const completionDate = req.query.completionDate
+  const task = req.body.task
+  const completionDate = req.body.completionDate
   if (!checkLogin(req, res)) {
     res.status(403).json('User is not logged in')
   } else {
@@ -189,8 +189,8 @@ app.delete('/tasks/:id', (req, res) => {
 
 // Login using cookies
 app.post('/login', (req, res) => {
-  const username = req.query.username
-  const password = req.query.password
+  const username = req.body.username
+  const password = req.body.password
   // eslint-disable-next-line eqeqeq
   if (password == 'm295') {
     req.session.user = username
