@@ -9,8 +9,9 @@ Dieses Repository enthält die Lösung für die Modulabschlussprüfung 295 (Back
 ## Installation
 1. Repository klonen
 2. In das Verzeichnis wechseln
-3. `npm install` ausführen
-4. `npm start` ausführen
+3. Node Version 18 oder neuer ist erforderlich
+4. `npm install` ausführen
+5. `npm start` ausführen
 
 ## Endpoints
 ### GET/tasks
