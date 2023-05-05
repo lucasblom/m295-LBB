@@ -107,7 +107,7 @@
     - Content: `{
     "message": "Task not found"
   }`
-## POST//login
+## POST/login
 ### POST/login nimmt einen JSON Body entgegen, welcher die Eigenschaften des Users enthält. Es gibt eine Login-Bestätigung im JSON Format zurück.
 - Success Response (http://localhost:3300/login):
     - Code: 200

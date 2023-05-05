@@ -28,7 +28,7 @@ PUT/tasks/{id} aktualisiert einen Task. Es nimmt die ID des Tasks als Parameter 
 ### DELETE/tasks/{id}
 DELETE/tasks/{id} löscht einen Task. Es nimmt die ID des Tasks als Parameter entgegen. Es gibt den gelöschten Task im JSON Format zurück.
 
-### POST//login
+### POST/login
  POST/login nimmt einen JSON Body entgegen, welcher die Eigenschaften des Users enthält. Es gibt eine Login-Bestätigung im JSON Format zurück.
 
 ### GET/verify
@@ -36,3 +36,6 @@ DELETE/tasks/{id} löscht einen Task. Es nimmt die ID des Tasks als Parameter en
 
 ### DELETE/logout
 DELETE/logout loggt den User aus.
+
+## Authentifizierung
+Diese API verwented Authentifizierung mittles `Cookies`. Bei dem Login ist wichtig das Sie das passwort: `m295` verwenden. Die email ist egal, solange Sie gültig ist.
