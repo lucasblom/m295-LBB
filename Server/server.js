@@ -171,7 +171,8 @@ app.put('/tasks/:id', (req, res) => {
   const id = req.params.id
   const task = req.body.task
   const completionDate = req.body.completionDate
-  const person = req.session.user
+  const author = req.session.user
+  // const person = req.session.user
   if (!checkLogin(req, res)) {
     console.log('Status: 403 \t User is not logged in')
     res.status(403).json('User is not logged in')
@@ -184,7 +185,7 @@ app.put('/tasks/:id', (req, res) => {
         console.log('Status: 406 \t Task title is missing')
         res.status(406).json('Task title is missing')
       } else {
-        res.status(201).send(updateTask(id, task, completionDate, person))
+        res.status(201).send(updateTask(id, task, completionDate, author))
       }
     }
   }
