@@ -129,7 +129,7 @@
   }`
 
 ## DELETE/logout
-### DELETE/logout loggt den User aus. Es gibt eine Bestätigung in der Konsole aus.
+### DELETE/logout loggt den User aus.
 - Success Response (http://localhost:3300/logout):
     - Code: 204
     - Content: `{}`
