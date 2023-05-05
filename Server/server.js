@@ -29,21 +29,21 @@ const ToDo = [
     task: 'Complete math homework',
     creationDate: '2021-03-01',
     completionDate: '',
-    person: ''
+    person: 'user@mail.com'
   },
   {
     id: 2,
     task: 'Buy groceries',
     creationDate: '2021-03-01',
     completionDate: '2021-03-03',
-    person: ''
+    person: 'user@mail.com'
   },
   {
     id: 3,
     task: 'Call mom',
     creationDate: '2021-03-01',
     completionDate: '2021-03-03',
-    person: ''
+    person: 'user@mail.com'
   }
 ]
 
