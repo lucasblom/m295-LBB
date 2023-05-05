@@ -110,6 +110,15 @@ function checkLogin (req, res, next) {
     return false
   }
 }
+
+// Function check if email is valid
+function validateEmail (email) {
+  if (email.includes('@') && email.includes('.')) {
+    return true
+  } else {
+    return false
+  }
+}
 // --------------------------------main requirements here--------------------------------//
 
 // Get all tasks
@@ -192,7 +201,7 @@ app.post('/login', (req, res) => {
   const username = req.body.username
   const password = req.body.password
   // eslint-disable-next-line eqeqeq
-  if (password == 'm295') {
+  if (password == 'm295' && validateEmail(username)) {
     req.session.user = username
     res.status(200).json('Login successful')
   } else {
