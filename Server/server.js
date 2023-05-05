@@ -55,8 +55,9 @@ function returnAll () {
 };
 
 // Function to add a task
-function addTask (id, task, completionDate, person) {
+function addTask (task, completionDate, person) {
   const creationDate = new Date().toISOString().slice(0, 10)
+  const id = ToDo.length + 1
   const newTask = {
     id,
     task,
@@ -114,7 +115,7 @@ function checkLogin (req, res, next) {
 // Get all tasks
 app.get('/tasks', (req, res) => {
   if (!checkLogin(req, res)) {
-    res.status(401).json('User is not logged in')
+    res.status(403).json('User is not logged in')
   } else {
     res.send(returnAll())
   }
@@ -122,17 +123,16 @@ app.get('/tasks', (req, res) => {
 
 // Add a task
 app.post('/tasks', (req, res) => {
-  const id = req.query.id
   const task = req.query.task
   const completionDate = req.query.completionDate
   const person = req.session.user
   if (!checkLogin(req, res)) {
-    res.status(401).json('User is not logged in')
+    res.status(403).json('User is not logged in')
   } else {
-    if (checkId(id)) {
-      res.status(400).json('Task already exists')
+    if (!task) {
+      res.status(406).json('Task title is missing')
     } else {
-      addTask(id, task, completionDate, person)
+      addTask(task, completionDate, person)
       res.status(201).send(ToDo[ToDo.length - 1])
     }
   }
@@ -142,7 +142,7 @@ app.post('/tasks', (req, res) => {
 app.get('/tasks/:id', (req, res) => {
   const id = req.params.id
   if (!checkLogin(req, res)) {
-    res.status(401).json('User is not logged in')
+    res.status(403).json('User is not logged in')
   } else {
     if (!checkId(id)) {
       res.status(404).json('Task not found')
@@ -157,12 +157,16 @@ app.put('/tasks/:id', (req, res) => {
   const task = req.query.task
   const completionDate = req.query.completionDate
   if (!checkLogin(req, res)) {
-    res.status(401).json('User is not logged in')
+    res.status(403).json('User is not logged in')
   } else {
     if (!checkId(id)) {
       res.status(404).json('Task not found')
     } else {
-      res.status(201).send(updateTask(id, task, completionDate))
+      if (!task) {
+        res.status(406).json('Task title is missing')
+      } else {
+        res.status(201).send(updateTask(id, task, completionDate))
+      }
     }
   }
 })
@@ -171,7 +175,7 @@ app.put('/tasks/:id', (req, res) => {
 app.delete('/tasks/:id', (req, res) => {
   const id = req.params.id
   if (!checkLogin(req, res)) {
-    res.status(401).json('User is not logged in')
+    res.status(403).json('User is not logged in')
   } else {
     if (!checkId(id)) {
       res.status(404).json('Task not found')
